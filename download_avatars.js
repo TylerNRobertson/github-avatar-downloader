@@ -2,6 +2,8 @@ var request  = require('request');
 var fs = require('fs');
 var GITHUB_USER = "TylerNRobertson";
 var GITHUB_TOKEN = "adafc4a537975c32ea2cf57312b80297b4ae4c40";
+let repoOwner = process.argv[2]
+let repoName = process.argv[3]
 function getRepoContributors(repoOwner, repoName, cb) {
   var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
   var options = {
@@ -26,7 +28,7 @@ function downloadImageByURL(url, filePath) {
       console.log('Response Status Code: ', response.statusCode);
       console.log('Downloading images...');
     })
-    .pipe(fs.createWriteStream('./avatars/ + filepath +.jpg'))               // Note 4
+    .pipe(fs.createWriteStream('./avatars/' + filePath + '.jpg'))               // Note 4
     .on('finish', function(){
       console.log('Downloads complete.');
     });
@@ -36,3 +38,4 @@ function save(user){
   var url = user['avatar_url'];
   downloadImageByURL(url, login)
 }
+getRepoContributors(repoOwner, repoName, save);
